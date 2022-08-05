@@ -1,6 +1,22 @@
 version: "3.9"
+
+volumes:
+  postgres-db:
+
 services:
-  postgress:
+  backstage:
+    build: backstage
+    ports:
+      - '7007:7007'
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      POSTGRES_HOST: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+  postgres:
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
     image: postgres
     ports:
       - '5432:5432'
