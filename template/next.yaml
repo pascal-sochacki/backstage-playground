@@ -64,22 +64,6 @@ spec:
         values:
           repo: ${{ parameters.repoUrl | parseRepoUrl }}
 
-
-    # This step publishes the contents of the working directory to GitHub.
-    - id: publish
-      name: Publish
-      action: publish:github
-      input:
-        allowedHosts: ['github.com']
-        description: This is ${{ parameters.name }}
-        defaultBranch: 'main'
-        repoUrl: ${{ parameters.repoUrl }}
-
-  # Outputs are displayed to the user after a successful execution of the template.
-  output:
-    links:
-      - title: Repository
-        url: ${{ steps.publish.output.remoteUrl }}
-      - title: Open in catalog
-        icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
+    - id: test
+      name: test
+      action: mycompany:kubectl
