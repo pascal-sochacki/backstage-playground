@@ -22,7 +22,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends libsqlite3-dev python3 build-essential && \
     yarn config set python /usr/bin/python3
 
-RUN yarn install --frozen-lockfile --network-timeout 600000 && rm -rf "$(yarn cache dir)"
+RUN yarn install --frozen-lockfile --network-timeout 600000
 
 COPY . .
 
@@ -46,7 +46,7 @@ RUN apt-get update && \
 COPY --from=build /app/yarn.lock /app/package.json /app/packages/backend/dist/skeleton.tar.gz ./
 RUN tar xzf skeleton.tar.gz && rm skeleton.tar.gz
 
-RUN yarn install --frozen-lockfile --production --network-timeout 600000 && rm -rf "$(yarn cache dir)"
+RUN yarn install --frozen-lockfile --production --network-timeout 600000
 
 # Copy the built packages from the build stage
 COPY --from=build /app/packages/backend/dist/bundle.tar.gz .
