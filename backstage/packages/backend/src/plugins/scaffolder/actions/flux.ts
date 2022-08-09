@@ -43,7 +43,7 @@ export function addNamespace(options: CreateBuiltInActionsOptions) {
 `apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${ctx.input.ns}`)
+  name: ${ctx.input.ns.toLowerCase()}`)
 
             await git.add({dir: ctx.workspacePath, filepath: ctx.input.ns})
             await git.commit({
@@ -110,22 +110,22 @@ export function addDeployment(options: CreateBuiltInActionsOptions) {
 kind: Deployment
 metadata:
   labels:
-    app: ${ctx.input.repo.repo}
-  name: ${ctx.input.repo.repo}
-  namespace: ${ctx.input.ns}
+    app: ${ctx.input.repo.repo.toLowerCase()}
+  name: ${ctx.input.repo.repo.toLowerCase()}
+  namespace: ${ctx.input.ns.toLowerCase()}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ${ctx.input.repo.repo}
+      app: ${ctx.input.repo.repo.toLowerCase()}
   template:
     metadata:
       labels:
-        app: ${ctx.input.repo.repo}
+        app: ${ctx.input.repo.repo.toLowerCase()}
     spec:
       containers:
-      - image: ghcr.io/${ ctx.input.repo.owner }/${ ctx.input.repo.repo }:main
-        name: ${ctx.input.repo.repo}`)
+      - image: ghcr.io/${ ctx.input.repo.owner.toLowerCase() }/${ ctx.input.repo.repo.toLowerCase() }:main
+        name: ${ctx.input.repo.repo.toLowerCase()}`)
 
             await git.add({dir: ctx.workspacePath, filepath: ctx.input.ns})
             await git.commit({
