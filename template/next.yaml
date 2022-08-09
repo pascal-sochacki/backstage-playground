@@ -73,6 +73,13 @@ spec:
         defaultBranch: 'main'
         repoUrl: ${{ parameters.repoUrl }}
 
+    - id: clean-up
+      name: Clean up
+      action: fs:delete
+      input:
+        files:
+          - "."
+
     - id: ns-create
       name: Create Namespace
       action: mycompany:flux:create-namespace
