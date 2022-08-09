@@ -90,3 +90,8 @@ catalog:
       target: https://github.com/pascal-sochacki/backstage-playground/blob/main/template/next.yaml
       rules:
         - allow: [Template]
+
+    - type: file
+      target: debug.yaml
+      rules:
+        - allow: [Template]

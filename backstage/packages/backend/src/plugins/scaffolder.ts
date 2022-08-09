@@ -4,6 +4,8 @@ import { ScmIntegrations } from '@backstage/integration';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
 import {kubectlAction} from "./scaffolder/actions/kubectl";
+import {commitAndPush} from "./scaffolder/actions/git";
+import {addDeployment, addNamespace} from "./scaffolder/actions/flux";
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -11,14 +13,21 @@ export default async function createPlugin(
   const catalogClient = new CatalogClient({ discoveryApi: env.discovery });
   const integrations = ScmIntegrations.fromConfig(env.config);
 
-  const builtInActions = createBuiltinActions({
+  const options = {
     integrations,
     catalogClient,
     config: env.config,
     reader: env.reader,
-  });
+  };
+  const builtInActions = createBuiltinActions(options);
 
-  const actions = [...builtInActions, kubectlAction()];
+  const actions = [
+      ...builtInActions,
+    kubectlAction(options),
+    addNamespace(options),
+    addDeployment(options),
+    commitAndPush(options),
+  ];
 
   return await createRouter({
     actions,

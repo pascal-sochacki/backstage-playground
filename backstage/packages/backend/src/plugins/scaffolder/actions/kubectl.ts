@@ -1,19 +1,18 @@
-import {createTemplateAction} from '@backstage/plugin-scaffolder-backend';
-import k8s from "@kubernetes/client-node";
+import { createTemplateAction} from '@backstage/plugin-scaffolder-backend';
+import {KubeConfig, CoreV1Api} from "@kubernetes/client-node";
+import {Config} from "@backstage/config";
 
-export const kubectlAction = () => {
-    return createTemplateAction<{ contents: string; filename: string }>({
+export function kubectlAction(options: { config: Config }) {
+    return createTemplateAction<{}>({
         id: 'mycompany:kubectl',
-        schema: {
-        },
-        async handler() {
-            const kc = new k8s.KubeConfig();
+        async handler(ctx) {
+            const kc = new KubeConfig();
             kc.loadFromDefault();
 
-            const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+            const k8sApi = kc.makeApiClient(CoreV1Api);
 
             k8sApi.listNamespacedPod('default').then((res) => {
-                console.log(res.body);
+                ctx.logger.log("info", JSON.stringify(res.body.items))
             });
         },
     });

@@ -2,15 +2,12 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: nextjs-template
-  title: nextjs Template
-  description: An template for a simple nextjs project
+  name: debug
+  title: debug
+  description: Awtf
 spec:
   owner: user:guest
   type: service
-
-  # These parameters are used to generate the input form in the frontend, and are
-  # used to gather input data for the execution of the template.
   parameters:
     - title: Fill in some steps
       required:
@@ -39,40 +36,6 @@ spec:
   # via the parameters above.
   steps:
     # Each step executes an action, in this case one templates files into the working directory.
-    - id: fetch-base
-      name: Fetch Base
-      action: fetch:template
-      input:
-        url: ./nextjs
-        values:
-          name: ${{ parameters.name }}
-
-    - id: fetch-actions
-      name: Fetch Github Action
-      action: fetch:template
-      input:
-        # gh action uses the same syntax for templating, so we ignore all templating
-        copyWithoutTemplating:
-          - '**/*.yaml'
-        url: ./ghaction
-
-#    - id: fetch-actions
-#      name: Fetch Helm Chart
-#      action: fetch:template
-#      input:
-#        url: ./helm
-#        values:
-#          repo: ${{ parameters.repoUrl | parseRepoUrl }}
-
-    - id: publish
-      name: Publish
-      action: publish:github
-      input:
-        allowedHosts: ['github.com']
-        description: This is ${{ parameters.name }}
-        defaultBranch: 'main'
-        repoUrl: ${{ parameters.repoUrl }}
-
     - id: ns-create
       name: Create Namespace
       action: mycompany:flux:create-namespace
@@ -86,3 +49,4 @@ spec:
         url: https://github.com/pascal-sochacki/backstage-playground-deployment
         ns: ${{ parameters.name }}
         repo: ${{ parameters.repoUrl | parseRepoUrl }}
+
