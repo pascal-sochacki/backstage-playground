@@ -1,0 +1,90 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
+kind: Template
+metadata:
+  name: simple-web-template
+  title: Simple Web Template
+  description: An template for a simple web project
+spec:
+  owner: user:guest
+  type: service
+
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
+  parameters:
+    - title: Fill in some steps
+      required:
+        - name
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  # These steps are executed in the scaffolder backend, using data that we gathered
+  # via the parameters above.
+  steps:
+    # Each step executes an action, in this case one templates files into the working directory.
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        copyWithoutTemplating:
+          - '**/build.yaml'
+        url: ./code
+        values:
+          name: ${{ parameters.name }}
+          repoOwner: ${{ (parameters.repoUrl | parseRepoUrl).owner }}
+          repoName: ${{ (parameters.repoUrl | parseRepoUrl).repo }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: This is ${{ parameters.name }}
+        defaultBranch: 'main'
+        repoUrl: ${{ parameters.repoUrl }}
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+    - id: clean-up
+      name: Clean up
+      action: fs:delete
+      input:
+        files:
+          - "."
+
+    - id: ns-create
+      name: Create Namespace
+      action: mycompany:flux:create-namespace
+      input:
+        url: https://github.com/pascal-sochacki/backstage-playground-deployment
+        ns: ${{ parameters.name }}
+
+    - id: ns-create
+      name: Create Deployment
+      action: mycompany:flux:create-deployment
+      input:
+        url: https://github.com/pascal-sochacki/backstage-playground-deployment
+        ns: ${{ parameters.name }}
+        repo: ${{ parameters.repoUrl | parseRepoUrl }}

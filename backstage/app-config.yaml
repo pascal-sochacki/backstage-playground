@@ -68,30 +68,17 @@ techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
     runIn: 'docker' # Alternatives - 'local'
+    dockerImage: 'spotify/techdocs:v1.0.3'
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
-
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
-catalog:
-  import:
-    entityFilename: catalog-info.yaml
-    pullRequestBranchName: backstage-integration
-  rules:
-    - allow: [Component, System, API, Resource, Location]
-  locations:
-
-    - type: url
-      target: https://github.com/pascal-sochacki/backstage-playground/blob/main/template/next.yaml
-      rules:
-        - allow: [Template]
-
-    - type: file
-      target: debug.yaml
-      rules:
-        - allow: [Template]
