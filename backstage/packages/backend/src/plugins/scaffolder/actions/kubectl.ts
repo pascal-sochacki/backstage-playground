@@ -1,8 +1,7 @@
 import { createTemplateAction} from '@backstage/plugin-scaffolder-backend';
 import {KubeConfig, CoreV1Api} from "@kubernetes/client-node";
-import {Config} from "@backstage/config";
 
-export function kubectlAction(options: { config: Config }) {
+export function kubectlAction() {
     return createTemplateAction<{}>({
         id: 'mycompany:kubectl',
         async handler(ctx) {

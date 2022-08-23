@@ -23,7 +23,7 @@ export default async function createPlugin(
 
   const actions = [
       ...builtInActions,
-    kubectlAction(options),
+    kubectlAction(),
     addNamespace(options),
     addDeployment(options),
     commitAndPush(options),
