@@ -5,7 +5,7 @@ import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
 import {kubectlAction} from "./scaffolder/actions/kubectl";
 import {commitAndPush} from "./scaffolder/actions/git";
-import {addDeployment, addNamespace} from "./scaffolder/actions/flux";
+import {addDeployment} from "./scaffolder/actions/flux";
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -24,7 +24,6 @@ export default async function createPlugin(
   const actions = [
       ...builtInActions,
     kubectlAction(),
-    addNamespace(options),
     addDeployment(options),
     commitAndPush(options),
   ];

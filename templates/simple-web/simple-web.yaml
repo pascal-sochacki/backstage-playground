@@ -75,13 +75,6 @@ spec:
           - "."
 
     - id: ns-create
-      name: Create Namespace
-      action: mycompany:flux:create-namespace
-      input:
-        url: https://github.com/pascal-sochacki/backstage-playground-deployment
-        ns: ${{ parameters.name }}
-
-    - id: ns-create
       name: Create Deployment
       action: mycompany:flux:create-deployment
       input:
