@@ -14,3 +14,7 @@ flux bootstrap github \
 --read-write-key \
 --personal
 ```
+
+```[shell]
+helm install sealed-secrets -n kube-system --set-string fullnameOverride=sealed-secrets-controller sealed-secrets/sealed-secrets 
+```
