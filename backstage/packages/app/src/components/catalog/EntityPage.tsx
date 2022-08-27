@@ -67,6 +67,7 @@ import {
   RELATION_PART_OF,
   RELATION_PROVIDES_API,
 } from '@backstage/catalog-model';
+import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
@@ -78,6 +79,12 @@ const techdocsContent = (
     </TechDocsAddons>
   </EntityTechdocsContent>
 );
+
+const kubernetes = (
+  <EntityLayout.Route path="/kubernetes" title="Kubernetes">
+    <EntityKubernetesContent refreshIntervalMs={30000} />
+  </EntityLayout.Route>
+)
 
 const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
@@ -154,6 +161,8 @@ const serviceEntityPage = (
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
       {cicdContent}
     </EntityLayout.Route>
+
+    {kubernetes}
 
     <EntityLayout.Route path="/api" title="API">
       <Grid container spacing={3} alignItems="stretch">

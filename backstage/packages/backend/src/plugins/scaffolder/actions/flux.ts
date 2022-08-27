@@ -61,6 +61,7 @@ kind: Deployment
 metadata:
   labels:
     app: ${ctx.input.repo.repo.toLowerCase()}
+    backstage.io/kubernetes-id: ${ctx.input.repo.repo.toLowerCase()}
   name: ${ctx.input.repo.repo.toLowerCase()}
   namespace: ${ctx.input.ns.toLowerCase()}
 spec:
@@ -72,6 +73,7 @@ spec:
     metadata:
       labels:
         app: ${ctx.input.repo.repo.toLowerCase()}
+        backstage.io/kubernetes-id: ${ctx.input.repo.repo.toLowerCase()}
     spec:
       imagePullSecrets:
       - name: github

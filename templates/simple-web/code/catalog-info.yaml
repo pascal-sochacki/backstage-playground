@@ -4,6 +4,8 @@ metadata:
   name: ${{ values.name }}
   annotations:
     github.com/project-slug: ${{ values.repoOwner }}/${{ values.repoName }}
+    backstage.io/kubernetes-id: ${{ values.name }}
+    backstage.io/kubernetes-namespace: ${{ values.name }}
   tags:
     - web
     - nginx
